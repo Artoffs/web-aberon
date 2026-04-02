@@ -42,6 +42,79 @@
             <h1>Premium Electronics</h1>
             <p>Discover our curated collection of high-quality tech products</p>
         </div>
+
+        <div class="toolbar">
+            <div class="product-count" id="productCount">6 products</div>
+            <div class="sort-control">
+                <label for="sortSelect">Sort by:</label>
+                <select id="sortSelect" class="sort-select">
+                    <option value="featured">Featured</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="rating-desc">Highest Rated</option>
+                    <option value="name-asc">Name: A to Z</option>
+                    <option value="name-desc">Name: Z to A</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="shop-layout">
+            <!-- DESKTOP FILTER SIDEBAR -->
+            <aside class="filter-sidebar">
+                <div class="filter-card">
+                    <div class="filter-card-header">
+                        <i data-lucide="sliders-horizontal"></i>
+                        <h2>Filters</h2>
+                    </div>
+                    <div class="filter-card-body">
+                        <div class="filter-group">
+                            <h3>Rating</h3>
+                            <div class="rating-options">
+                                <label class="rating-option">
+                                    <input type="checkbox" value="5" id="rating5">
+                                    <span class="checkmark"></span>
+                                    <span>5+ Stars</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="checkbox" value="4" id="rating4">
+                                    <span class="checkmark"></span>
+                                    <span>4+ Stars</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="checkbox" value="3" id="rating3">
+                                    <span class="checkmark"></span>
+                                    <span>3+ Stars</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <h3>Price Range</h3>
+                            <div class="price-inputs-row">
+                                <input type="number" id="priceMinInput" class="price-input" placeholder="Min" value="0" min="0" max="3000" step="10">
+                                <span class="price-input-sep">—</span>
+                                <input type="number" id="priceMaxInput" class="price-input" placeholder="Max" value="3000" min="0" max="3000" step="10">
+                            </div>
+                            <div class="dual-slider">
+                                <div class="slider-track"></div>
+                                <div class="slider-filled" id="sliderFilled"></div>
+                                <input type="range" id="sliderMin" class="slider-thumb" min="0" max="3000" value="0" step="10">
+                                <input type="range" id="sliderMax" class="slider-thumb" min="0" max="3000" value="3000" step="10">
+                            </div>
+                            <div class="price-labels">
+                                <span>$<span id="minPriceLabel">0</span></span>
+                                <span>$<span id="maxPriceLabel">3000</span></span>
+                            </div>
+                        </div>
+
+                        <button class="clear-filters-btn" id="clearFiltersBtn">Clear All Filters</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
     </div>
 </main>
 
@@ -103,10 +176,10 @@
     </div>
 </footer>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        lucide.createIcons();
-    });
-</script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>
