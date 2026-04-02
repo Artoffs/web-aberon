@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TechStore — Premium Electronics</title>
+    <title>TechStore — Product</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -16,7 +16,7 @@
             <span class="logo-text">TechStore</span>
         </a>
         <nav class="nav-links">
-            <a href="index.html" class="active">Products</a>
+            <a href="index.html">Products</a>
             <a href="categories.html">Categories</a>
             <a href="deals.html">Deals</a>
             <a href="about.html">About</a>
@@ -37,11 +37,8 @@
 </header>
 
 <main>
-    <div class="main-container">
-        <div class="hero">
-            <h1>Premium Electronics</h1>
-            <p>Discover our curated collection of high-quality tech products</p>
-        </div>
+    <div class="main-container" id="productContainer">
+        <div style="text-align: center; padding: 3rem;">Loading...</div>
     </div>
 </main>
 
@@ -103,10 +100,9 @@
     </div>
 </footer>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        lucide.createIcons();
-    });
-</script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/product.js"></script>
 </body>
 </html>
