@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TechStore — Premium Electronics</title>
+    <title>TechStore — Cart</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -16,15 +16,13 @@
             <span class="logo-text">TechStore</span>
         </a>
         <nav class="nav-links">
-            <a href="index.html" class="active">Products</a>
+            <a href="index.html">Products</a>
             <a href="categories.html">Categories</a>
             <a href="deals.html">Deals</a>
             <a href="about.html">About</a>
         </nav>
         <div class="header-actions">
-            <button class="icon-btn" aria-label="Search">
-                <i data-lucide="search"></i>
-            </button>
+            <button class="icon-btn" aria-label="Search"><i data-lucide="search"></i></button>
             <a href="cart.html" class="icon-btn" aria-label="Cart">
                 <i data-lucide="shopping-cart"></i>
                 <span class="cart-badge hidden" id="cartBadge">0</span>
@@ -38,9 +36,29 @@
 
 <main>
     <div class="main-container">
-        <div class="hero">
-            <h1>Premium Electronics</h1>
-            <p>Discover our curated collection of high-quality tech products</p>
+        <h1 class="page-title" style="margin-bottom: 2rem;">Shopping Cart</h1>
+
+        <div id="emptyCartState" style="display: none;">
+            <div class="empty-cart">
+                <h2>Your Cart is Empty</h2>
+                <p>Add some amazing products to get started!</p>
+                <a href="index.html" class="continue-shopping-btn">Continue Shopping</a>
+            </div>
+        </div>
+
+        <div id="cartWithItemsState" style="display: none;">
+            <div class="cart-layout">
+                <div class="cart-items" id="cartItemsList"></div>
+                <div class="cart-sidebar">
+                    <div class="summary-card">
+                        <h2>Order Summary</h2>
+                        <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+                        <div class="summary-row"><span>Tax (8%)</span><span id="taxAmount">$0.00</span></div>
+                        <div class="summary-row total"><span>Total</span><span class="total-amount" id="totalAmount">$0.00</span></div>
+                        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
@@ -53,13 +71,7 @@
                     <div class="logo-icon"><span>T</span></div>
                     <span style="font-weight: 800;">TechStore</span>
                 </div>
-                <p>Your trusted destination for premium electronics and tech accessories. Quality products, competitive prices, exceptional service.</p>
-                <div class="social-links">
-                    <a href="#" class="social-icon"><i data-lucide="facebook"></i></a>
-                    <a href="#" class="social-icon"><i data-lucide="twitter"></i></a>
-                    <a href="#" class="social-icon"><i data-lucide="instagram"></i></a>
-                    <a href="#" class="social-icon"><i data-lucide="youtube"></i></a>
-                </div>
+                <p>Your trusted destination for premium electronics.</p>
             </div>
             <div>
                 <h3 class="footer-title">Quick Links</h3>
@@ -67,25 +79,18 @@
                     <li><a href="index.html">Shop All Products</a></li>
                     <li><a href="deals.html">Special Deals</a></li>
                     <li><a href="about.html">About Us</a></li>
-                    <li><a href="#">Contact Support</a></li>
                 </ul>
             </div>
             <div>
                 <h3 class="footer-title">Customer Service</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Shipping Information</a></li>
-                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Returns</a></li>
                     <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Track Order</a></li>
                 </ul>
-                <div style="margin-top: 1rem;">
-                    <p style="color:#6b7280; font-size:0.875rem;">Support: 1-800-TECH-SHOP</p>
-                    <p style="color:#6b7280; font-size:0.875rem;">support@techstore.com</p>
-                </div>
             </div>
             <div>
                 <h3 class="footer-title">Newsletter</h3>
-                <p style="color:#6b7280; font-size:0.875rem; margin-bottom:1rem;">Subscribe to get special offers, free giveaways, and updates.</p>
                 <form class="newsletter-form" id="newsletterForm">
                     <input type="email" placeholder="Enter your email" required>
                     <button type="submit">Subscribe</button>
@@ -94,19 +99,73 @@
         </div>
         <div class="footer-bottom">
             <p>© 2026 TechStore. All rights reserved.</p>
-            <div class="legal-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
-            </div>
         </div>
     </div>
 </footer>
 
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        lucide.createIcons();
+function renderCartPage() {
+    const emptyDiv = document.getElementById('emptyCartState');
+    const cartDiv = document.getElementById('cartWithItemsState');
+    const cartItemsDiv = document.getElementById('cartItemsList');
+    
+    if (cartItems.length === 0) {
+        emptyDiv.style.display = 'block';
+        cartDiv.style.display = 'none';
+        return;
+    }
+    
+    emptyDiv.style.display = 'none';
+    cartDiv.style.display = 'block';
+    
+    cartItemsDiv.innerHTML = cartItems.map(item => `
+        <div class="cart-item">
+            <div class="cart-item-image"><img src="${item.image}" alt="${item.name}"></div>
+            <div class="cart-item-details">
+                <div><h3>${escapeHtml(item.name)}</h3><p class="cart-item-category">${item.category}</p></div>
+                <div class="cart-item-footer">
+                    <div class="quantity-control">
+                        <button class="quantity-btn" data-id="${item.id}" data-delta="-1">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="quantity-btn" data-id="${item.id}" data-delta="1">+</button>
+                    </div>
+                    <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                </div>
+            </div>
+            <button class="remove-btn" data-id="${item.id}">✕</button>
+        </div>
+    `).join('');
+    
+    const { subtotal, tax, total } = calculateCartTotals();
+    document.getElementById('subtotal').textContent = formatPrice(subtotal);
+    document.getElementById('taxAmount').textContent = formatPrice(tax);
+    document.getElementById('totalAmount').textContent = formatPrice(total);
+    
+    document.querySelectorAll('.quantity-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            updateQuantity(parseInt(btn.dataset.id), parseInt(btn.dataset.delta));
+            renderCartPage();
+        });
     });
+    
+    document.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            removeFromCart(parseInt(btn.dataset.id));
+            renderCartPage();
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initMobileMenu();
+    initNewsletter();
+    loadCart();
+    renderCartPage();
+    lucide.createIcons();
+});
 </script>
 </body>
 </html>
