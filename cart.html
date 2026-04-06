@@ -51,12 +51,33 @@
                 <div class="cart-items" id="cartItemsList"></div>
                 <div class="cart-sidebar">
                     <div class="summary-card">
-                        <h2>Order Summary</h2>
-                        <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
-                        <div class="summary-row"><span>Tax (8%)</span><span id="taxAmount">$0.00</span></div>
-                        <div class="summary-row total"><span>Total</span><span class="total-amount" id="totalAmount">$0.00</span></div>
-                        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
-                    </div>
+    <h2>Order Summary</h2>
+    <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="subtotal">$0.00</span>
+    </div>
+    <div class="summary-row">
+        <span>Tax (8%)</span>
+        <span id="taxAmount">$0.00</span>
+    </div>
+    <div class="summary-row total">
+        <span>Total</span>
+        <span class="total-amount" id="totalAmount">$0.00</span>
+    </div>
+    
+    <!-- Promo Code Block -->
+    <div class="promo-section">
+        <label>Promo Code</label>
+        <div class="promo-input-group">
+            <input type="text" id="promoInput" placeholder="Enter code" class="promo-input">
+            <button id="applyPromoBtn" class="apply-promo-btn">Apply</button>
+        </div>
+        <p class="promo-hint">Try code "SAVE10" for 10% off</p>
+        <div id="promoMessage" class="promo-message"></div>
+    </div>
+    
+    <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+</div>
                 </div>
             </div>
         </div>
