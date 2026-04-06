@@ -128,65 +128,114 @@
 <script src="js/cart.js"></script>
 <script src="js/ui.js"></script>
 <script>
-function renderCartPage() {
-    const emptyDiv = document.getElementById('emptyCartState');
-    const cartDiv = document.getElementById('cartWithItemsState');
-    const cartItemsDiv = document.getElementById('cartItemsList');
+    let appliedDiscount = 0;
+    let activePromo = null;
     
-    if (cartItems.length === 0) {
-        emptyDiv.style.display = 'block';
-        cartDiv.style.display = 'none';
-        return;
+    function calculateTotalsWithDiscount() {
+        const originalSubtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const discountedSubtotal = originalSubtotal - appliedDiscount;
+        const tax = discountedSubtotal * 0.08;
+        const total = discountedSubtotal + tax;
+        return { subtotal: discountedSubtotal, tax, total, originalSubtotal };
     }
     
-    emptyDiv.style.display = 'none';
-    cartDiv.style.display = 'block';
+    function updateTotalsDisplay() {
+        const { subtotal, tax, total } = calculateTotalsWithDiscount();
+        document.getElementById('subtotal').textContent = formatPrice(subtotal);
+        document.getElementById('taxAmount').textContent = formatPrice(tax);
+        document.getElementById('totalAmount').textContent = formatPrice(total);
+    }
     
-    cartItemsDiv.innerHTML = cartItems.map(item => `
-        <div class="cart-item">
-            <div class="cart-item-image"><img src="${item.image}" alt="${item.name}"></div>
-            <div class="cart-item-details">
-                <div><h3>${escapeHtml(item.name)}</h3><p class="cart-item-category">${item.category}</p></div>
-                <div class="cart-item-footer">
-                    <div class="quantity-control">
-                        <button class="quantity-btn" data-id="${item.id}" data-delta="-1">-</button>
-                        <span>${item.quantity}</span>
-                        <button class="quantity-btn" data-id="${item.id}" data-delta="1">+</button>
+    function applyPromo() {
+        const input = document.getElementById('promoInput');
+        const code = input.value.trim().toUpperCase();
+        const messageDiv = document.getElementById('promoMessage');
+        
+        if (!code) {
+            messageDiv.textContent = 'Please enter a promo code';
+            messageDiv.style.color = 'var(--red)';
+            return false;
+        }
+        
+        if (code === 'SAVE10') {
+            if (activePromo === 'SAVE10') {
+                messageDiv.textContent = 'Promo code already applied!';
+                messageDiv.style.color = 'var(--orange)';
+                return false;
+            }
+            const { originalSubtotal } = calculateTotalsWithDiscount();
+            appliedDiscount = originalSubtotal * 0.1;
+            activePromo = 'SAVE10';
+            messageDiv.textContent = '✓ Promo code SAVE10 applied! 10% off';
+            messageDiv.style.color = 'var(--green)';
+            renderCartPage();
+            return true;
+        } else {
+            messageDiv.textContent = 'Invalid promo code. Try "SAVE10"';
+            messageDiv.style.color = 'var(--red)';
+            return false;
+        }
+    }
+    
+    function renderCartPage() {
+        const emptyDiv = document.getElementById('emptyCartState');
+        const cartDiv = document.getElementById('cartWithItemsState');
+        const cartItemsDiv = document.getElementById('cartItemsList');
+        
+        if (cartItems.length === 0) {
+            emptyDiv.style.display = 'block';
+            cartDiv.style.display = 'none';
+            return;
+        }
+        
+        emptyDiv.style.display = 'none';
+        cartDiv.style.display = 'block';
+        
+        cartItemsDiv.innerHTML = cartItems.map(item => `
+            <div class="cart-item">
+                <div class="cart-item-image"><img src="${item.image}" alt="${item.name}"></div>
+                <div class="cart-item-details">
+                    <div><h3>${escapeHtml(item.name)}</h3><p class="cart-item-category">${item.category}</p></div>
+                    <div class="cart-item-footer">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" data-id="${item.id}" data-delta="-1">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" data-id="${item.id}" data-delta="1">+</button>
+                        </div>
+                        <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
                     </div>
-                    <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
                 </div>
+                <button class="remove-btn" data-id="${item.id}">✕</button>
             </div>
-            <button class="remove-btn" data-id="${item.id}">✕</button>
-        </div>
-    `).join('');
-    
-    const { subtotal, tax, total } = calculateCartTotals();
-    document.getElementById('subtotal').textContent = formatPrice(subtotal);
-    document.getElementById('taxAmount').textContent = formatPrice(tax);
-    document.getElementById('totalAmount').textContent = formatPrice(total);
-    
-    document.querySelectorAll('.quantity-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            updateQuantity(parseInt(btn.dataset.id), parseInt(btn.dataset.delta));
-            renderCartPage();
+        `).join('');
+        
+        updateTotalsDisplay();
+        
+        document.querySelectorAll('.quantity-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateQuantity(parseInt(btn.dataset.id), parseInt(btn.dataset.delta));
+                renderCartPage();
+            });
         });
-    });
-    
-    document.querySelectorAll('.remove-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            removeFromCart(parseInt(btn.dataset.id));
-            renderCartPage();
+        
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                removeFromCart(parseInt(btn.dataset.id));
+                renderCartPage();
+            });
         });
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initMobileMenu();
+        initNewsletter();
+        loadCart();
+        renderCartPage();
+        
+        document.getElementById('applyPromoBtn')?.addEventListener('click', applyPromo);
+        document.getElementById('checkoutBtn')?.addEventListener('click', () => alert('Proceeding to checkout (demo)'));
+        lucide.createIcons();
     });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    initMobileMenu();
-    initNewsletter();
-    loadCart();
-    renderCartPage();
-    lucide.createIcons();
-});
 </script>
 </body>
 </html>
