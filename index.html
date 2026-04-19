@@ -43,6 +43,11 @@
             <p>Discover our curated collection of high-quality tech products</p>
         </div>
 
+        <button class="mobile-filter-btn" id="mobileFilterBtn">
+            <i data-lucide="sliders-horizontal"></i>
+            Filters
+        </button>
+
         <div class="toolbar">
             <div class="product-count" id="productCount">6 products</div>
             <div class="sort-control">
@@ -62,55 +67,96 @@
             <!-- DESKTOP FILTER SIDEBAR -->
             <aside class="filter-sidebar">
                 <div class="filter-card">
-                    <div class="filter-card-header">
-                        <i data-lucide="sliders-horizontal"></i>
-                        <h2>Filters</h2>
-                    </div>
-                    <div class="filter-card-body">
-                        <div class="filter-group">
-                            <h3>Rating</h3>
-                            <div class="rating-options">
-                                <label class="rating-option">
-                                    <input type="checkbox" value="5" id="rating5">
-                                    <span class="checkmark"></span>
-                                    <span>5+ Stars</span>
-                                </label>
-                                <label class="rating-option">
-                                    <input type="checkbox" value="4" id="rating4">
-                                    <span class="checkmark"></span>
-                                    <span>4+ Stars</span>
-                                </label>
-                                <label class="rating-option">
-                                    <input type="checkbox" value="3" id="rating3">
-                                    <span class="checkmark"></span>
-                                    <span>3+ Stars</span>
-                                </label>
-                            </div>
-                        </div>
+    <div class="filter-header">
+        <i data-lucide="sliders-horizontal"></i>
+        <h2>Filters</h2>
+    </div>
 
-                        <div class="filter-group">
-                            <h3>Price Range</h3>
-                            <div class="price-inputs-row">
-                                <input type="number" id="priceMinInput" class="price-input" placeholder="Min" value="0" min="0" max="3000" step="10">
-                                <span class="price-input-sep">—</span>
-                                <input type="number" id="priceMaxInput" class="price-input" placeholder="Max" value="3000" min="0" max="3000" step="10">
-                            </div>
-                            <div class="dual-slider">
-                                <div class="slider-track"></div>
-                                <div class="slider-filled" id="sliderFilled"></div>
-                                <input type="range" id="sliderMin" class="slider-thumb" min="0" max="3000" value="0" step="10">
-                                <input type="range" id="sliderMax" class="slider-thumb" min="0" max="3000" value="3000" step="10">
-                            </div>
-                            <div class="price-labels">
-                                <span>$<span id="minPriceLabel">0</span></span>
-                                <span>$<span id="maxPriceLabel">3000</span></span>
-                            </div>
-                        </div>
+    <div class="filter-section">
+        <h3>Rating</h3>
+        <label class="checkbox-container">
+            <input type="checkbox" value="5">
+            <span class="checkmark"></span>
+            5+ Stars
+        </label>
+        <label class="checkbox-container">
+            <input type="checkbox" value="4">
+            <span class="checkmark"></span>
+            4+ Stars
+        </label>
+        <label class="checkbox-container">
+            <input type="checkbox" value="3">
+            <span class="checkmark"></span>
+            3+ Stars
+        </label>
+    </div>
 
-                        <button class="clear-filters-btn" id="clearFiltersBtn">Clear All Filters</button>
-                    </div>
+    <div class="filter-section">
+        <h3>Price Range</h3>
+        <div class="price-slider-wrapper">
+            <div class="slider-progress"></div>
+        </div>
+        <div class="range-input">
+            <input type="range" class="range-min" id="priceMin" min="0" max="3000" value="0" step="10">
+            <input type="range" class="range-max" id="priceMax" min="0" max="3000" value="3000" step="10">
+        </div>
+        <div class="range-labels">
+            <span id="label-min">$0</span>
+            <span id="label-max">$3000</span>
+        </div>
+    </div>
+
+    <button class="clear-filters" id="clearFiltersBtn">Clear All Filters</button>
+    </div>
+</aside>
+
+            <!-- MOBILE SHEET -->
+            <div class="sheet-overlay" id="sheetOverlay"></div>
+            <div class="sheet" id="mobileSheet">
+                <div class="sheet-header">
+                    <h2>Filters</h2>
+                    <button class="sheet-close" id="closeSheetBtn">
+                        <i data-lucide="x"></i>
+                    </button>
                 </div>
-            </aside>
+                <div class="sheet-content">
+                    <div class="filter-section">
+                        <h3>Rating</h3>
+                        <label class="checkbox-container">
+                            <input type="checkbox" class="mobile-rating" value="5">
+                            <span class="checkmark"></span>
+                            5+ Stars
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" class="mobile-rating" value="4">
+                            <span class="checkmark"></span>
+                            4+ Stars
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" class="mobile-rating" value="3">
+                            <span class="checkmark"></span>
+                            3+ Stars
+                        </label>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Price Range</h3>
+                        <div class="price-slider-wrapper">
+                            <div class="slider-progress" id="mobileSliderProgress"></div>
+                        </div>
+                        <div class="range-input">
+                            <input type="range" class="range-min" id="mobilePriceMin" min="0" max="3000" value="0" step="10">
+                            <input type="range" class="range-max" id="mobilePriceMax" min="0" max="3000" value="3000" step="10">
+                        </div>
+                        <div class="range-labels">
+                            <span id="mobile-label-min">$0</span>
+                            <span id="mobile-label-max">$3000</span>
+                        </div>
+                    </div>
+
+                    <button class="clear-filters" id="mobileClearFiltersBtn">Clear All Filters</button>
+                </div>
+            </div>
 
             <!-- Products Grid -->
             <div class="products-grid" id="productsGrid"></div>
