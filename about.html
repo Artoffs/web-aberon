@@ -22,7 +22,9 @@
             <a href="about.html" class="active">About</a>
         </nav>
         <div class="header-actions">
-            <button class="icon-btn" aria-label="Search"><i data-lucide="search"></i></button>
+            <button class="icon-btn" aria-label="Search">
+                <i data-lucide="search"></i>
+            </button>
             <a href="cart.html" class="icon-btn" aria-label="Cart">
                 <i data-lucide="shopping-cart"></i>
                 <span class="cart-badge hidden" id="cartBadge">0</span>
@@ -41,27 +43,79 @@
             <p>Your trusted destination for premium electronics and cutting-edge technology</p>
         </div>
 
-        <div class="about-card">
+        <div class="story-card">
             <h2>Our Story</h2>
-            <p>Founded in 2020, TechStore has grown to become one of the most trusted names in consumer electronics. We're passionate about bringing you the latest technology products at competitive prices.</p>
-            <p>Our mission is simple: to provide exceptional products, outstanding customer service, and a seamless shopping experience.</p>
+            <div class="story-text">
+                <p>Founded in 2020, TechStore has grown to become one of the most trusted names in consumer electronics. We're passionate about bringing you the latest and greatest technology products at competitive prices.</p>
+                <p>Our mission is simple: to provide exceptional products, outstanding customer service, and a seamless shopping experience. Whether you're a tech enthusiast or just looking for reliable electronics, we're here to help you find exactly what you need.</p>
+                <p>With a carefully curated selection of premium brands and products, we ensure that every item in our catalog meets our high standards for quality and performance.</p>
+            </div>
         </div>
 
-        <div class="values-grid">
-            <div class="value-card">
-                <div class="value-icon">🎯</div>
-                <h3>Quality First</h3>
-                <p>We only stock products from trusted brands.</p>
+        <div class="values-section">
+            <h2 class="page-title" style="text-align: center; margin-bottom: 1.5rem;">Our Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <h3>Quality First</h3>
+                    <p>We only stock products from trusted brands that meet our rigorous quality standards.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💯</div>
+                    <h3>Customer Satisfaction</h3>
+                    <p>Your happiness is our priority. We're committed to providing exceptional service at every step.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">⚡</div>
+                    <h3>Fast &amp; Reliable</h3>
+                    <p>Quick shipping, easy returns, and responsive support - we're here when you need us.</p>
+                </div>
             </div>
-            <div class="value-card">
-                <div class="value-icon">💯</div>
-                <h3>Customer Satisfaction</h3>
-                <p>Your happiness is our priority.</p>
-            </div>
-            <div class="value-card">
-                <div class="value-icon">⚡</div>
-                <h3>Fast & Reliable</h3>
-                <p>Quick shipping and easy returns.</p>
+        </div>
+
+        <div class="contact-card">
+            <h2>Get in Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i data-lucide="mail"></i>
+                    </div>
+                    <div>
+                        <h3>Email Us</h3>
+                        <p>support@techstore.com</p>
+                        <p>sales@techstore.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i data-lucide="phone"></i>
+                    </div>
+                    <div>
+                        <h3>Call Us</h3>
+                        <p>1-800-TECH-SHOP</p>
+                        <p>(1-800-832-4746)</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i data-lucide="map-pin"></i>
+                    </div>
+                    <div>
+                        <h3>Visit Us</h3>
+                        <p>123 Tech Street</p>
+                        <p>San Francisco, CA 94105</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i data-lucide="clock"></i>
+                    </div>
+                    <div>
+                        <h3>Business Hours</h3>
+                        <p>Mon-Fri: 9AM - 6PM PST</p>
+                        <p>Sat-Sun: 10AM - 4PM PST</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -71,9 +125,17 @@
     <div class="footer-inner">
         <div class="footer-grid">
             <div class="footer-brand">
-                <div class="logo-icon" style="display: inline-flex;"><span>T</span></div>
-                <span style="font-weight: 800; margin-left: 8px;">TechStore</span>
-                <p>Your trusted destination for premium electronics.</p>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+                    <div class="logo-icon"><span>T</span></div>
+                    <span style="font-weight: 800;">TechStore</span>
+                </div>
+                <p>Your trusted destination for premium electronics and tech accessories. Quality products, competitive prices, exceptional service.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i data-lucide="facebook"></i></a>
+                    <a href="#" class="social-icon"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="social-icon"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="social-icon"><i data-lucide="youtube"></i></a>
+                </div>
             </div>
             <div>
                 <h3 class="footer-title">Quick Links</h3>
@@ -81,18 +143,25 @@
                     <li><a href="index.html">Shop All Products</a></li>
                     <li><a href="deals.html">Special Deals</a></li>
                     <li><a href="about.html">About Us</a></li>
+                    <li><a href="#">Contact Support</a></li>
                 </ul>
             </div>
             <div>
                 <h3 class="footer-title">Customer Service</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Shipping</a></li>
-                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Shipping Information</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
                     <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Track Order</a></li>
                 </ul>
+                <div style="margin-top: 1rem;">
+                    <p style="color:#6b7280; font-size:0.875rem;">Support: 1-800-TECH-SHOP</p>
+                    <p style="color:#6b7280; font-size:0.875rem;">support@techstore.com</p>
+                </div>
             </div>
             <div>
                 <h3 class="footer-title">Newsletter</h3>
+                <p style="color:#6b7280; font-size:0.875rem; margin-bottom:1rem;">Subscribe to get special offers, free giveaways, and updates.</p>
                 <form class="newsletter-form" id="newsletterForm">
                     <input type="email" placeholder="Enter your email" required>
                     <button type="submit">Subscribe</button>
@@ -101,6 +170,11 @@
         </div>
         <div class="footer-bottom">
             <p>© 2026 TechStore. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
         </div>
     </div>
 </footer>

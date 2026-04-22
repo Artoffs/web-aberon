@@ -22,7 +22,9 @@
             <a href="about.html">About</a>
         </nav>
         <div class="header-actions">
-            <button class="icon-btn" aria-label="Search"><i data-lucide="search"></i></button>
+            <button class="icon-btn" aria-label="Search">
+                <i data-lucide="search"></i>
+            </button>
             <a href="cart.html" class="icon-btn" aria-label="Cart">
                 <i data-lucide="shopping-cart"></i>
                 <span class="cart-badge hidden" id="cartBadge">0</span>
@@ -50,7 +52,7 @@
                     <h2>Flash Sale Event</h2>
                     <p>Save up to 30% on selected items</p>
                 </div>
-                <div class="flash-sale-timer">
+                <div class="flash-sale-timer" id="flashSaleTimer">
                     <i data-lucide="clock"></i>
                     <span>Ends in <span id="timerDays">2</span> days</span>
                 </div>
@@ -58,6 +60,10 @@
         </div>
 
         <div class="deals-grid" id="dealsGrid"></div>
+
+        <div class="browse-all">
+            <a href="index.html" class="browse-all-btn">Browse All Products</a>
+        </div>
     </div>
 </main>
 
@@ -65,9 +71,17 @@
     <div class="footer-inner">
         <div class="footer-grid">
             <div class="footer-brand">
-                <div class="logo-icon" style="display: inline-flex;"><span>T</span></div>
-                <span style="font-weight: 800; margin-left: 8px;">TechStore</span>
-                <p>Your trusted destination for premium electronics.</p>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+                    <div class="logo-icon"><span>T</span></div>
+                    <span style="font-weight: 800;">TechStore</span>
+                </div>
+                <p>Your trusted destination for premium electronics and tech accessories. Quality products, competitive prices, exceptional service.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i data-lucide="facebook"></i></a>
+                    <a href="#" class="social-icon"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="social-icon"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="social-icon"><i data-lucide="youtube"></i></a>
+                </div>
             </div>
             <div>
                 <h3 class="footer-title">Quick Links</h3>
@@ -75,18 +89,25 @@
                     <li><a href="index.html">Shop All Products</a></li>
                     <li><a href="deals.html">Special Deals</a></li>
                     <li><a href="about.html">About Us</a></li>
+                    <li><a href="#">Contact Support</a></li>
                 </ul>
             </div>
             <div>
                 <h3 class="footer-title">Customer Service</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Shipping</a></li>
-                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Shipping Information</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
                     <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Track Order</a></li>
                 </ul>
+                <div style="margin-top: 1rem;">
+                    <p style="color:#6b7280; font-size:0.875rem;">Support: 1-800-TECH-SHOP</p>
+                    <p style="color:#6b7280; font-size:0.875rem;">support@techstore.com</p>
+                </div>
             </div>
             <div>
                 <h3 class="footer-title">Newsletter</h3>
+                <p style="color:#6b7280; font-size:0.875rem; margin-bottom:1rem;">Subscribe to get special offers, free giveaways, and updates.</p>
                 <form class="newsletter-form" id="newsletterForm">
                     <input type="email" placeholder="Enter your email" required>
                     <button type="submit">Subscribe</button>
@@ -95,6 +116,11 @@
         </div>
         <div class="footer-bottom">
             <p>© 2026 TechStore. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
         </div>
     </div>
 </footer>
@@ -102,55 +128,6 @@
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/ui.js"></script>
-<script>
-    const dealsProducts = [productsDB[1], productsDB[2], productsDB[3], productsDB[4]];
-    
-    function renderDeals() {
-        const grid = document.getElementById('dealsGrid');
-        if (!grid) return;
-        
-        grid.innerHTML = dealsProducts.map(product => `
-            <div class="deal-card">
-                <div class="discount-badge">Save 20%</div>
-                <a class="product-card" href="product.html?id=${product.id}">
-                    <div class="product-image"><img src="${product.mainImage}" alt="${product.name}"></div>
-                    <div class="product-info">
-                        <h3 class="product-title">${escapeHtml(product.name)}</h3>
-                        <div class="product-rating">
-                            <div class="stars">${renderStars(product.rating)}</div>
-                            <span class="rating-number">(${product.rating})</span>
-                        </div>
-                        <div class="product-price-row">
-                            <span class="product-price">$${product.price.toFixed(2)}</span>
-                            <span class="product-category">${product.category.toUpperCase()}</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        `).join('');
-        lucide.createIcons();
-    }
-    
-    function updateTimer() {
-        const timerSpan = document.getElementById('timerDays');
-        if (timerSpan) {
-            const targetDate = new Date();
-            targetDate.setDate(targetDate.getDate() + 2);
-            const now = new Date();
-            const diff = targetDate - now;
-            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            timerSpan.textContent = days > 0 ? days : 0;
-        }
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        initMobileMenu();
-        initNewsletter();
-        loadCart();
-        renderDeals();
-        updateTimer();
-        lucide.createIcons();
-    });
-</script>
+<script src="js/deals.js"></script>
 </body>
 </html>
