@@ -1,8 +1,24 @@
+// Состояние фильтров
 let currentMinPrice = 0;
 let currentMaxPrice = 3000;
 let selectedRatings = [];
 let currentSort = "featured";
+let priceGap = 100;
 
+// DOM элементы
+const priceMinInput = document.getElementById('priceMin');
+const priceMaxInput = document.getElementById('priceMax');
+const labelMin = document.getElementById('label-min');
+const labelMax = document.getElementById('label-max');
+const progress = document.querySelector('.filter-sidebar .slider-progress');
+
+const mobilePriceMin = document.getElementById('mobilePriceMin');
+const mobilePriceMax = document.getElementById('mobilePriceMax');
+const mobileLabelMin = document.getElementById('mobile-label-min');
+const mobileLabelMax = document.getElementById('mobile-label-max');
+const mobileProgress = document.getElementById('mobileSliderProgress');
+
+// Фильтрация товаров
 function filterProducts(products) {
     return products.filter(p => {
         if (p.price < currentMinPrice || p.price > currentMaxPrice) return false;
@@ -11,6 +27,7 @@ function filterProducts(products) {
     });
 }
 
+// Сортировка товаров
 function sortProducts(products) {
     const sorted = [...products];
     switch (currentSort) {
@@ -29,128 +46,149 @@ function sortProducts(products) {
     }
 }
 
-// Инициализация слайдера
-function initPriceSlider() {
-    const sliderMin = document.getElementById('sliderMin');
-    const sliderMax = document.getElementById('sliderMax');
-    const minInput = document.getElementById('priceMinInput');
-    const maxInput = document.getElementById('priceMaxInput');
-    const minLabel = document.getElementById('minPriceLabel');
-    const maxLabel = document.getElementById('maxPriceLabel');
-    const filledTrack = document.getElementById('sliderFilled');
+// Обновление UI слайдера
+function updatePriceUI() {
+    if (labelMin) labelMin.innerText = "$" + currentMinPrice;
+    if (labelMax) labelMax.innerText = "$" + currentMaxPrice;
+    if (priceMinInput) priceMinInput.value = currentMinPrice;
+    if (priceMaxInput) priceMaxInput.value = currentMaxPrice;
     
-    if (!sliderMin || !sliderMax) return;
+    const minPercent = (currentMinPrice / 3000) * 100;
+    const maxPercent = (currentMaxPrice / 3000) * 100;
+    if (progress) {
+        progress.style.left = minPercent + "%";
+        progress.style.right = (100 - maxPercent) + "%";
+    }
     
-    function updateFromSlider() {
-        let minVal = parseInt(sliderMin.value);
-        let maxVal = parseInt(sliderMax.value);
-        
-        if (maxVal - minVal < 100) {
-            if (document.activeElement === sliderMin) {
-                minVal = maxVal - 100;
-                sliderMin.value = minVal;
+    if (mobileLabelMin) mobileLabelMin.innerText = "$" + currentMinPrice;
+    if (mobileLabelMax) mobileLabelMax.innerText = "$" + currentMaxPrice;
+    if (mobilePriceMin) mobilePriceMin.value = currentMinPrice;
+    if (mobilePriceMax) mobilePriceMax.value = currentMaxPrice;
+    if (mobileProgress) {
+        mobileProgress.style.left = minPercent + "%";
+        mobileProgress.style.right = (100 - maxPercent) + "%";
+    }
+}
+
+// Инициализация слайдеров
+function initPriceSliders() {
+    if (!priceMinInput || !priceMaxInput) return;
+    
+    const updateFromDesktop = () => {
+        let minVal = parseInt(priceMinInput.value);
+        let maxVal = parseInt(priceMaxInput.value);
+        if (maxVal - minVal < priceGap) {
+            if (document.activeElement === priceMinInput) {
+                minVal = maxVal - priceGap;
+                priceMinInput.value = minVal;
             } else {
-                maxVal = minVal + 100;
-                sliderMax.value = maxVal;
+                maxVal = minVal + priceGap;
+                priceMaxInput.value = maxVal;
             }
         }
-        
         currentMinPrice = minVal;
         currentMaxPrice = maxVal;
-        
-        minLabel.textContent = minVal;
-        maxLabel.textContent = maxVal;
-        minInput.value = minVal;
-        maxInput.value = maxVal;
-        
-        const minPercent = (minVal / 3000) * 100;
-        const maxPercent = (maxVal / 3000) * 100;
-        filledTrack.style.left = minPercent + '%';
-        filledTrack.style.right = (100 - maxPercent) + '%';
-        
+        updatePriceUI();
         if (typeof refreshProducts === 'function') refreshProducts();
-    }
+    };
     
-    function updateFromInputs() {
-        let minVal = parseInt(minInput.value);
-        let maxVal = parseInt(maxInput.value);
-        
-        if (isNaN(minVal)) minVal = 0;
-        if (isNaN(maxVal)) maxVal = 3000;
-        if (minVal < 0) minVal = 0;
-        if (maxVal > 3000) maxVal = 3000;
-        if (minVal > maxVal - 100) minVal = maxVal - 100;
-        if (maxVal < minVal + 100) maxVal = minVal + 100;
-        
-        sliderMin.value = minVal;
-        sliderMax.value = maxVal;
-        updateFromSlider();
-    }
+    priceMinInput.addEventListener("input", updateFromDesktop);
+    priceMaxInput.addEventListener("input", updateFromDesktop);
     
-    sliderMin.addEventListener('input', updateFromSlider);
-    sliderMax.addEventListener('input', updateFromSlider);
-    minInput.addEventListener('change', updateFromInputs);
-    maxInput.addEventListener('change', updateFromInputs);
-    
-    updateFromSlider();
-}
-
-// Инициализация чекбоксов рейтинга
-function initRatingCheckboxes() {
-    const checkboxes = document.querySelectorAll('.rating-option input');
-    
-    function updateRatings() {
-        selectedRatings = [];
-        checkboxes.forEach(cb => {
-            if (cb.checked) {
-                selectedRatings.push(parseInt(cb.value));
+    if (mobilePriceMin && mobilePriceMax) {
+        mobilePriceMin.addEventListener("input", () => {
+            let minVal = parseInt(mobilePriceMin.value);
+            let maxVal = parseInt(mobilePriceMax.value);
+            if (maxVal - minVal < priceGap) {
+                minVal = maxVal - priceGap;
+                mobilePriceMin.value = minVal;
             }
+            currentMinPrice = minVal;
+            currentMaxPrice = maxVal;
+            updatePriceUI();
+            if (typeof refreshProducts === 'function') refreshProducts();
         });
-        if (typeof refreshProducts === 'function') refreshProducts();
-    }
-    
-    checkboxes.forEach(cb => {
-        cb.addEventListener('change', updateRatings);
-    });
-}
-
-// Сброс фильтров
-function initClearButton() {
-    const clearBtn = document.getElementById('clearFiltersBtn');
-    if (clearBtn) {
-        clearBtn.addEventListener('click', () => {
-            document.querySelectorAll('.rating-option input').forEach(cb => cb.checked = false);
-            selectedRatings = [];
-            
-            const sliderMin = document.getElementById('sliderMin');
-            const sliderMax = document.getElementById('sliderMax');
-            if (sliderMin && sliderMax) {
-                sliderMin.value = 0;
-                sliderMax.value = 3000;
-                const filledTrack = document.getElementById('sliderFilled');
-                if (filledTrack) {
-                    filledTrack.style.left = '0%';
-                    filledTrack.style.right = '0%';
-                }
-                document.getElementById('priceMinInput').value = 0;
-                document.getElementById('priceMaxInput').value = 3000;
-                document.getElementById('minPriceLabel').textContent = '0';
-                document.getElementById('maxPriceLabel').textContent = '3000';
-                currentMinPrice = 0;
-                currentMaxPrice = 3000;
+        
+        mobilePriceMax.addEventListener("input", () => {
+            let minVal = parseInt(mobilePriceMin.value);
+            let maxVal = parseInt(mobilePriceMax.value);
+            if (maxVal - minVal < priceGap) {
+                maxVal = minVal + priceGap;
+                mobilePriceMax.value = maxVal;
             }
-            
-            const sortSelect = document.getElementById('sortSelect');
-            if (sortSelect) sortSelect.value = "featured";
-            currentSort = "featured";
-            
+            currentMinPrice = minVal;
+            currentMaxPrice = maxVal;
+            updatePriceUI();
             if (typeof refreshProducts === 'function') refreshProducts();
         });
     }
 }
 
-// Инициализация сортировки
-function initSort() {
+// Инициализация чекбоксов рейтинга
+function initRatingCheckboxes() {
+    const desktopCheckboxes = document.querySelectorAll('.filter-sidebar .checkbox-container input');
+    const mobileCheckboxes = document.querySelectorAll('.mobile-rating');
+    
+    function updateRatings() {
+        selectedRatings = [];
+        document.querySelectorAll('.filter-sidebar .checkbox-container input:checked').forEach(cb => {
+            selectedRatings.push(parseInt(cb.value));
+        });
+        document.querySelectorAll('.mobile-rating:checked').forEach(cb => {
+            const val = parseInt(cb.value);
+            if (!selectedRatings.includes(val)) selectedRatings.push(val);
+        });
+        if (typeof refreshProducts === 'function') refreshProducts();
+    }
+    
+    desktopCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            mobileCheckboxes.forEach(mcb => {
+                if (mcb.value === cb.value) mcb.checked = cb.checked;
+            });
+            updateRatings();
+        });
+    });
+    
+    mobileCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            desktopCheckboxes.forEach(dcb => {
+                if (dcb.value === cb.value) dcb.checked = cb.checked;
+            });
+            updateRatings();
+        });
+    });
+}
+
+// Сброс фильтров
+function resetFilters() {
+    currentMinPrice = 0;
+    currentMaxPrice = 3000;
+    selectedRatings = [];
+    currentSort = "featured";
+    
+    document.querySelectorAll('.filter-sidebar .checkbox-container input').forEach(cb => cb.checked = false);
+    document.querySelectorAll('.mobile-rating').forEach(cb => cb.checked = false);
+    
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) sortSelect.value = "featured";
+    
+    updatePriceUI();
+    if (typeof refreshProducts === 'function') refreshProducts();
+}
+
+// Инициализация фильтров на странице
+function initFilters() {
+    initPriceSliders();
+    initRatingCheckboxes();
+    updatePriceUI();
+    
+    const clearBtn = document.getElementById('clearFiltersBtn');
+    if (clearBtn) clearBtn.addEventListener('click', resetFilters);
+    
+    const mobileClearBtn = document.getElementById('mobileClearFiltersBtn');
+    if (mobileClearBtn) mobileClearBtn.addEventListener('click', resetFilters);
+    
     const sortSelect = document.getElementById('sortSelect');
     if (sortSelect) {
         sortSelect.addEventListener('change', (e) => {
@@ -158,12 +196,4 @@ function initSort() {
             if (typeof refreshProducts === 'function') refreshProducts();
         });
     }
-}
-
-// Запуск всех фильтров
-function initFilters() {
-    initPriceSlider();
-    initRatingCheckboxes();
-    initClearButton();
-    initSort();
 }

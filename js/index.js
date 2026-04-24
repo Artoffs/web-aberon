@@ -1,4 +1,10 @@
-let refreshProducts;
+// Функция обновления товаров
+function refreshProducts() {
+    renderProducts();
+}
+
+// Рендер товаров на главной странице
+// js/index.js
 
 function renderProducts() {
     const grid = document.getElementById('productsGrid');
@@ -6,8 +12,19 @@ function renderProducts() {
     
     if (!grid) return;
     
-    let filtered = filterProducts(productList);
-    filtered = sortProducts(filtered);
+    let filtered = productList.filter(p => {
+        if (p.price < currentMinPrice || p.price > currentMaxPrice) return false;
+        if (selectedRatings.length > 0 && !selectedRatings.some(r => p.rating >= r)) return false;
+        return true;
+    });
+    
+    switch (currentSort) {
+        case "price-asc": filtered.sort((a, b) => a.price - b.price); break;
+        case "price-desc": filtered.sort((a, b) => b.price - a.price); break;
+        case "rating-desc": filtered.sort((a, b) => b.rating - a.rating); break;
+        case "name-asc": filtered.sort((a, b) => a.name.localeCompare(b.name)); break;
+        default: filtered.sort((a, b) => a.id - b.id);
+    }
     
     countDisplay.textContent = `${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
     
@@ -33,16 +50,17 @@ function renderProducts() {
         </a>
     `).join('');
     
+    // Обновляем иконки Lucide после добавления новых элементов
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
 }
 
-refreshProducts = renderProducts;
-
+// Инициализация главной страницы
 document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initNewsletter();
+    initMobileFilters();
     loadCart();
     initFilters();
     renderProducts();

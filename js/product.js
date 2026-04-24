@@ -1,9 +1,13 @@
+// js/product.js
+
+// Получение похожих товаров
 function getRelatedProducts(currentProduct, limit = 3) {
     return Object.values(productsDB)
         .filter(p => p.id !== currentProduct.id && p.category === currentProduct.category)
         .slice(0, limit);
 }
 
+// Рендер страницы товара
 function renderProductPage() {
     const productId = getProductIdFromUrl();
     const product = productsDB[productId];
@@ -35,14 +39,16 @@ function renderProductPage() {
         </div>
 
         <div class="product-layout">
-            <!-- GALLERY -->
+            <!-- GALLERY WITH SLIDER -->
             <div class="gallery">
                 <div class="main-image-container">
-                    <img src="${product.mainImage}" alt="${escapeHtml(product.name)}" class="main-image" id="mainImage">
-                    <button class="gallery-nav gallery-prev" id="galleryPrev" aria-label="Previous image">
+                    <button class="gallery-nav gallery-prev" id="galleryPrev">
                         <i data-lucide="chevron-left"></i>
                     </button>
-                    <button class="gallery-nav gallery-next" id="galleryNext" aria-label="Next image">
+                    <div class="main-image" id="mainImage">
+                        <img src="${product.mainImage}" alt="${escapeHtml(product.name)}">
+                    </div>
+                    <button class="gallery-nav gallery-next" id="galleryNext">
                         <i data-lucide="chevron-right"></i>
                     </button>
                 </div>
@@ -107,9 +113,8 @@ function renderProductPage() {
                         <div class="accordion-content">
                             <table class="specs-table">
                                 ${Object.entries(product.specs).map(([key, value]) => `
-                                    <tr>
-                                        <td class="spec-label">${key}</td>
-                                        <td class="spec-value">${value}</td>
+                                    <tr><td style="padding: 0.5rem 0; font-weight: 600; color: var(--text-muted);">${key}</td>
+                                    <td style="padding: 0.5rem 0;">${value}</td>
                                     </tr>
                                 `).join('')}
                             </table>
@@ -137,33 +142,50 @@ function renderProductPage() {
         </div>
     `;
     
-    // ========== ГАЛЕРЕЯ ==========
-    let currentIndex = 0;
+    // ========== ИНИЦИАЛИЗАЦИЯ ГАЛЕРЕИ-СЛАЙДЕРА ==========
+    let currentImageIndex = 0;
     const images = product.images;
-    const mainImage = document.getElementById('mainImage');
+    const mainImage = document.querySelector('#mainImage img');
     const thumbnails = document.querySelectorAll('.thumbnail');
     const prevBtn = document.getElementById('galleryPrev');
     const nextBtn = document.getElementById('galleryNext');
     
-    function updateImage(index) {
+    // Функция обновления главного изображения
+    function updateMainImage(index) {
         if (index < 0) index = images.length - 1;
         if (index >= images.length) index = 0;
-        currentIndex = index;
-        mainImage.src = images[currentIndex];
+        currentImageIndex = index;
+        mainImage.src = images[currentImageIndex];
         
+        // Обновляем активный класс у миниатюр
         thumbnails.forEach((thumb, i) => {
-            thumb.classList.toggle('active', i === currentIndex);
+            thumb.classList.toggle('active', i === currentImageIndex);
         });
     }
     
-    if (prevBtn) prevBtn.addEventListener('click', () => updateImage(currentIndex - 1));
-    if (nextBtn) nextBtn.addEventListener('click', () => updateImage(currentIndex + 1));
+    // Обработчики стрелок
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => updateMainImage(currentImageIndex - 1));
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => updateMainImage(currentImageIndex + 1));
+    }
     
+    // Обработчики миниатюр
     thumbnails.forEach((thumb, index) => {
-        thumb.addEventListener('click', () => updateImage(index));
+        thumb.addEventListener('click', () => updateMainImage(index));
     });
     
-    // ========== КОЛИЧЕСТВО ==========
+    // Клавиатурная навигация
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            updateMainImage(currentImageIndex - 1);
+        } else if (e.key === 'ArrowRight') {
+            updateMainImage(currentImageIndex + 1);
+        }
+    });
+    
+    // ========== НАСТРОЙКА КОЛИЧЕСТВА ==========
     const qtyMinus = document.getElementById('qtyMinus');
     const qtyPlus = document.getElementById('qtyPlus');
     const qtyValue = document.getElementById('qtyValue');
@@ -182,11 +204,12 @@ function renderProductPage() {
         });
     }
     
-    // ========== КОРЗИНА ==========
+    // ========== ДОБАВЛЕНИЕ В КОРЗИНУ ==========
     const addToCartBtn = document.getElementById('addToCartBtn');
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', () => {
             addToCart(product, quantity);
+            // Анимация кнопки
             addToCartBtn.innerHTML = '<i data-lucide="check"></i> Added!';
             setTimeout(() => {
                 addToCartBtn.innerHTML = '<i data-lucide="shopping-cart"></i> Add to Cart';
@@ -205,9 +228,13 @@ function renderProductPage() {
         });
     });
     
-    lucide.createIcons();
+    // Обновляем иконки Lucide
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }
 
+// Инициализация страницы товара
 document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initNewsletter();
