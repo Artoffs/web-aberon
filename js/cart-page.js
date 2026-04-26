@@ -174,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkoutBtn = document.getElementById('checkoutBtn');
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
-            alert('Proceeding to checkout (demo)');
         });
     }
     

@@ -53,6 +53,7 @@ const productsDB = {
         mainImage: "https://images.unsplash.com/photo-1673431738089-c4fc9c2e96a7?w=800",
         images: [
             "https://images.unsplash.com/photo-1673431738089-c4fc9c2e96a7?w=800",
+            "https://images.unsplash.com/photo-1673431738089-c4fc9c2e96a7?w=800",
             "https://images.unsplash.com/photo-1673431738089-c4fc9c2e96a7?w=800"
         ]
     },
@@ -79,6 +80,7 @@ const productsDB = {
         },
         mainImage: "https://images.unsplash.com/photo-1665860455418-017fa50d29bc?w=800",
         images: [
+            "https://images.unsplash.com/photo-1665860455418-017fa50d29bc?w=800",
             "https://images.unsplash.com/photo-1665860455418-017fa50d29bc?w=800",
             "https://images.unsplash.com/photo-1665860455418-017fa50d29bc?w=800"
         ]
@@ -107,6 +109,7 @@ const productsDB = {
         mainImage: "https://images.unsplash.com/photo-1532272278764-53cd1fe53f72?w=800",
         images: [
             "https://images.unsplash.com/photo-1532272278764-53cd1fe53f72?w=800",
+            "https://images.unsplash.com/photo-1532272278764-53cd1fe53f72?w=800",
             "https://images.unsplash.com/photo-1532272278764-53cd1fe53f72?w=800"
         ]
     },
@@ -134,6 +137,7 @@ const productsDB = {
         mainImage: "https://images.unsplash.com/photo-1674303324806-7018a739ed11?w=800",
         images: [
             "https://images.unsplash.com/photo-1674303324806-7018a739ed11?w=800",
+            "https://images.unsplash.com/photo-1674303324806-7018a739ed11?w=800",
             "https://images.unsplash.com/photo-1674303324806-7018a739ed11?w=800"
         ]
     },
@@ -160,6 +164,7 @@ const productsDB = {
         },
         mainImage: "https://images.unsplash.com/photo-1740637977676-c8040b41dc7a?w=800",
         images: [
+            "https://images.unsplash.com/photo-1740637977676-c8040b41dc7a?w=800",
             "https://images.unsplash.com/photo-1740637977676-c8040b41dc7a?w=800",
             "https://images.unsplash.com/photo-1740637977676-c8040b41dc7a?w=800"
         ]
