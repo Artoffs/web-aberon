@@ -1,11 +1,11 @@
+// js/index.js
+
 // Функция обновления товаров
 function refreshProducts() {
     renderProducts();
 }
 
 // Рендер товаров на главной странице
-// js/index.js
-
 function renderProducts() {
     const grid = document.getElementById('productsGrid');
     const countDisplay = document.getElementById('productCount');
@@ -46,11 +46,49 @@ function renderProducts() {
                     <span class="product-price">$${p.price.toFixed(2)}</span>
                     <span class="product-category">${p.category.toUpperCase()}</span>
                 </div>
+                <button class="add-to-cart-btn-card" 
+                    data-id="${p.id}" 
+                    data-name="${escapeHtml(p.name)}" 
+                    data-price="${p.price}" 
+                    data-img="${p.img}" 
+                    data-category="${p.category}">
+                    <i data-lucide="shopping-cart"></i>
+                    Add to Cart
+                </button>
             </div>
         </a>
     `).join('');
     
-    // Обновляем иконки Lucide после добавления новых элементов
+    // Добавляем обработчики для кнопок "Add to Cart"
+    document.querySelectorAll('.add-to-cart-btn-card').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Останавливаем всплытие, чтобы не переходить на страницу товара
+            e.preventDefault();
+            
+            const product = {
+                id: parseInt(btn.dataset.id),
+                name: btn.dataset.name,
+                price: parseFloat(btn.dataset.price),
+                img: btn.dataset.img,
+                category: btn.dataset.category
+            };
+            
+            addToCart(product, 1);
+            
+            // Визуальный фидбек
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check"></i> Added!';
+            btn.style.background = '#10b981';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.background = '';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }, 1500);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+    });
+    
+    // Обновляем иконки Lucide
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }

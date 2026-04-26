@@ -1280,6 +1280,28 @@ input[type="range"]::-webkit-slider-thumb {
     background: var(--blue-dark);
 }
 
+.add-to-cart-btn-card {
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 0.5rem;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.add-to-cart-btn-card:hover {
+    background: var(--blue-dark);
+}
+
 .accordion {
     border: 1px solid var(--border-color);
     border-radius: 0.75rem;
