@@ -15,6 +15,10 @@ function loadCart() {
 function saveCart() {
     localStorage.setItem('techstore_cart', JSON.stringify(cartItems));
     updateCartBadge();
+}
+
+function saveCartWithReload() {
+    saveCart();
     location.reload();
 }
 
@@ -51,7 +55,7 @@ function addToCart(product, quantity = 1) {
 
 function removeFromCart(productId) {
     cartItems = cartItems.filter(item => item.id !== productId);
-    saveCart();
+    saveCartWithReload();
 }
 
 function updateQuantity(productId, delta) {
