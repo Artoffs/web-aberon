@@ -1274,6 +1274,7 @@ input[type="range"]::-webkit-slider-thumb {
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
+    margin-top: auto;
 }
 
 .add-to-cart-btn:hover {
@@ -2016,4 +2017,20 @@ input[type="range"]::-webkit-slider-thumb {
         width: 16px;
         height: 16px;
     }
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.add-to-cart-btn-card {
+    margin-top: auto;
 }
